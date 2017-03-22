@@ -1,1 +1,4 @@
- char const * const strHello = "Hello World";
+extern char const  //* const strHello;
+
+ strHello[];
+char const  * fH();

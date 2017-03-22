@@ -2,18 +2,22 @@
 .SUFFIXES: .c .o
 
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall 
+#-gfull
 LDFLAGS=
-LIBSRCES=libhello.c libgoodbye.c 
-LIBS1=libhello libgoodbye 
+LIBSRCH=libhello.h libgoodbye.h 
+  
 SOURCES=hello.c
-OBJECTS=$(SOURCES:.c=.o)
+#OBJECTS=$(SOURCES:.c=.o)
 OBJDIR:=objdir
 OBJS=$(OBJDIR)/hello.o
+LIBS1=libhello.a libgoodbye.a
+LIBSO=$(LIBS1:.a=.o)
 EXECUTABLE=hello
 RM := rm
+#all: $(OBJS) $(SOURCES)
 all: main
-	echo order-only $(filter order-only, $(.FETAURES))
+	echo order-only!: $(filter order-only, $(.FETAURES))
 # libs
 
 
@@ -22,37 +26,21 @@ all: main
 main: $(EXECUTABLE)
 libs: $(LIBS1)
 
-	
-$(EXECUTABLE): $(OBJS) 
-	$(CC) $(LDFLAGS) $(OBJS) -o $@
-
-
-clean:
-	@echo clean : $(OBJS)  $(EXECUTABLE)
-	-$(RM)  -rf $(OBJS)  $(EXECUTABLE)
-	
+#$(LIBS1): 
+#	-L.-lgoodbye -L. -lhello
+$(EXECUTABLE): $(OBJS) $(LIBS1) 
+	$(CC)  -Wl,-trace-symbol=some_ref $(LIBSO) $(LDFLAGS) $(OBJS) -o $@
+	#ld  --warn-common -L.  -lgoodbye -L. -lhello $(LDFLAGS) $(OBJS) -o $@
+# -static -Wl,--warn-common 
 .PHONY: clean main libs
 
+$(OBJDIR)/%.o:%.c $(LIBSRCH)
+	$(CC) -I. $(CFLAGS) -c -o $@ $<
 
+%.a:%.o
+	ar rcsv $@ $<
+#$(CC) $(CFLAGS) -c -o	
 
-
-
-
-#hello.c $(OBJDIR)/
-
-#$(addprefix $(OBJDIR)/,hello.c)
-
-#%.o: %.c $(OBJECTS)
-#	$(CC) $(CFLAGS) $< -o $@
-#	@echo objs receipe for: $<  $@
-
-#
-$(OBJDIR)/%.o:%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-
-
-#all: $(OBJS) $(SOURCES)
 
 $(OBJS): | $(OBJDIR)
 
@@ -60,3 +48,16 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 
+#hello.c $(OBJDIR)/
+
+#$(addprefix $(OBJDIR)/,hello.c)
+#make --trace -w
+#%.o: %.c $(OBJECTS)
+#	$(CC) $(CFLAGS) $< -o $@
+#	@echo objs receipe for: $<  $@
+
+#
+clean:
+	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
+	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)
+	
