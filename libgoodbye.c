@@ -1,1 +1,1 @@
- char const * const strBye =   "Goodbye world";
+ char const * const bye = "Goodbye world";

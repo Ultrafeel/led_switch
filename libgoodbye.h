@@ -1,1 +1,1 @@
-extern char const * const strBye;
+extern char const * const bye;

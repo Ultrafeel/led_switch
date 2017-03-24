@@ -1,7 +1,8 @@
  #include "libhello.h"
- //extern
- // char const  * const strHello = "Hello World";
-char const   strHello[] = "Hello World";
 
-char const  * fH()
-{ return strHello; }
+char const hello[] = "Hello World";
+
+char const * get_hello()
+{ 
+	return hello;
+}

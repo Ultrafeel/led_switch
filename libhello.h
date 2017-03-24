@@ -1,4 +1,2 @@
-extern char const  //* const strHello;
-
- strHello[];
-char const  * fH();
+extern char const  hello[];
+char const  * get_hello();

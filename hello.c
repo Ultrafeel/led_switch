@@ -4,15 +4,9 @@
 #include <stdio.h>
 
 
-int main(){
-
-	puts(//fH());
-	strHello);
-	//printf("\n");
-	puts(strBye);
- 	//printf("\n");
+int main()
+{
+	puts(get_hello());
+	puts(bye);
     return 0;
 }
-
- //char const * const strHello = "Hello World";
- //char const * const strBye =   "Goodbye world";
