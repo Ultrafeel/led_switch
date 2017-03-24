@@ -1,5 +1,5 @@
-.SUFFIXES:
-.SUFFIXES: .c .o
+#.SUFFIXES:
+#.SUFFIXES: .c .o
 
 CC=gcc
 CFLAGS=-c -Wall 
@@ -17,7 +17,7 @@ EXECUTABLE=hello
 RM := rm
 #all: $(OBJS) $(SOURCES)
 all: main
-	echo order-only!: $(filter order-only, $(.FETAURES))
+	#echo order-only!: $(filter order-only, $(.FETAURES))
 # libs
 
 
@@ -26,8 +26,8 @@ all: main
 main: $(EXECUTABLE)
 libs: $(LIBS1)
 
-#$(LIBS1): 
-#	-L.-lgoodbye -L. -lhello
+#$(LIBS1):  -Wl,-trace-symbol=some_ref 
+#	-L.-lgoodbye -L. -lhello   $(LIBSO) 
 $(EXECUTABLE): $(OBJS) $(LIBS1) 
 	$(CC)  -Wl,-trace-symbol=some_ref $(LIBSO) $(LDFLAGS) $(OBJS) -o $@
 	#ld  --warn-common -L.  -lgoodbye -L. -lhello $(LDFLAGS) $(OBJS) -o $@
