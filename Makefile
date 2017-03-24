@@ -28,9 +28,9 @@ libs: $(LIBS1)
 
 #$(LIBS1):  -Wl,-trace-symbol=some_ref 
 #	-L.-lgoodbye -L. -lhello   $(LIBSO) 
-$(EXECUTABLE): $(OBJS) $(LIBS1) 
-	$(CC)  -Wl,-trace-symbol=some_ref $(LIBSO) $(LDFLAGS) $(OBJS) -o $@
-	#ld  --warn-common -L.  -lgoodbye -L. -lhello $(LDFLAGS) $(OBJS) -o $@
+$(EXECUTABLE): $(OBJS) $(LIBS1)  $(LIBSO)
+	$(CC)  $(LIBSO) $(LDFLAGS) $(OBJS) -o $@
+	#ld  --warn-common -Wl,-trace-symbol=fH  -L.  -lgoodbye -L. -lhello $(LDFLAGS) $(OBJS) -o $@
 # -static -Wl,--warn-common 
 .PHONY: clean main libs
 
@@ -38,6 +38,7 @@ $(OBJDIR)/%.o:%.c $(LIBSRCH)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
 
 %.a:%.o
+	@echo archiv: $@ $<
 	ar rcsv $@ $<
 #$(CC) $(CFLAGS) -c -o	
 
