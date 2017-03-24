@@ -10,7 +10,7 @@ OBJDIR:=objdir
 LIBDIR:=libraries
 OUT_TARG_DIR := target_bin/bin
 OBJS=$(OBJDIR)/hello.o
-LIBS_FILENAMES=$(LIBSRCH:.h=.a)
+LIBS_FILENAMES=libhello.a libgoodbye.so
 LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FILENAMES))
 LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
@@ -38,6 +38,9 @@ $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
 #$(OBJDIR)/%.o:%.c
 $(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
+
+%.so:%.o  
+	$(CC) -shared -o $@ $<
 
 $(LIBDIR)/%.a:$(OBJDIR)/%.o  |$(LIBDIR)
 	ar rcsv $@ $<
