@@ -28,8 +28,8 @@ libs: $(LIBS1)
 
 #$(LIBS1):  -Wl,-trace-symbol=some_ref 
 #	-L.-lgoodbye -L. -lhello   $(LIBSO) 
-$(EXECUTABLE): $(OBJS) libs  $(LIBSO)
-	$(CC)  -Wl,--trace-symbol=strBye,-L.,--library=hello  -L.  -lgoodbye  $(LDFLAGS) $(OBJS) -o $@
+$(EXECUTABLE): $(OBJS) libs 
+	$(CC) $(OBJS) -Wl,--trace-symbol=strBye,-L.,--library=hello  -L.  -lgoodbye  $(LDFLAGS)  -o $@
 	#ld  --warn-common -Wl,-trace-symbol=fH  -L.  -lgoodbye -L. -lhello $(LDFLAGS) $(OBJS) -o $@
 # -static -Wl,--warn-common 
 .PHONY: clean main libs
