@@ -6,7 +6,8 @@
 
 int main(){
 
-	puts(fH());//strHello
+	puts(//fH());
+	strHello);
 	//printf("\n");
 	puts(strBye);
  	//printf("\n");
