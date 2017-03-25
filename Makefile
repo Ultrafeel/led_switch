@@ -16,7 +16,7 @@ all: main
 main: $(EXECUTABLE)
 libs: $(LIBS1)
 
-$(EXECUTABLE): $(OBJS) libs 
+$(EXECUTABLE): $(OBJS) $(LIBS1)
 	$(CC) $(OBJS) -L. -lhello -L. -lgoodbye  $(LDFLAGS)  -o $@
 
 # -Wl,-trace-symbol=bye  
