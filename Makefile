@@ -7,7 +7,8 @@ SOURCES=hello.c
 OBJDIR:=objdir
 OBJS=$(OBJDIR)/hello.o
 LIBS1=libhello.a libgoodbye.a
-LIBSO=$(LIBS1:.a=.o)
+LIBS_O=$(LIBS1:.a=.o)
+LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
 RM := rm
 
@@ -22,7 +23,7 @@ $(EXECUTABLE): $(OBJS) $(LIBS1)
 # -Wl,-trace-symbol=bye  
 .PHONY: clean main libs
 
-$(OBJDIR)/%.o:%.c $(LIBSRCH)
+$(OBJDIR)/%.o:%.c $(LIBSRCH) | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
 	
 %.o:%.c $(LIBSRCH)
@@ -31,7 +32,7 @@ $(OBJDIR)/%.o:%.c $(LIBSRCH)
 %.a:%.o
 	ar rcsv $@ $<
 
-$(OBJS): | $(OBJDIR)
+#$(OBJS): 
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
@@ -41,5 +42,5 @@ $(OBJDIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBSO) $(LIBS1:.a=.so)
+	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so)
 
