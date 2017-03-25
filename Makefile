@@ -41,5 +41,5 @@ $(OBJDIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBSO)
+	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBSO) $(LIBS1:.a=.so)
 
