@@ -17,19 +17,23 @@ all: main
 main: $(EXECUTABLE)
 libs: $(LIBS1)
 
-$(EXECUTABLE): $(OBJS) $(LIBS1)
+$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB)
 	$(CC) $(OBJS) -L. -lhello -L. -lgoodbye  $(LDFLAGS)  -o $@
+
+#echo libso!: $(LIBS_OB)
 
 # -Wl,-trace-symbol=bye  
 .PHONY: clean main libs
 
-$(OBJDIR)/%.o:%.c $(LIBSRCH) | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -c -o $@ $<
-	
-%.o:%.c $(LIBSRCH)
+$(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
 
-%.a:%.o
+# %.h $(LIBS_OB) $(LIBSRCH)
+#$(OBJDIR)/%.o:%.c
+$(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
+	$(CC) -I. $(CFLAGS) -c -o $@ $<
+
+%.a:$(OBJDIR)/%.o  
 	ar rcsv $@ $<
 
 #$(OBJS): 
