@@ -5,9 +5,11 @@ LIBSRCH=libhello.h libgoodbye.h
   
 SOURCES=hello.c
 OBJDIR:=objdir
+LIBDIR:=libraries
 OBJS=$(OBJDIR)/hello.o
-LIBS1=libhello.a libgoodbye.a
-LIBS_O=$(LIBS1:.a=.o)
+LIBS_FN=$(LIBSRCH:.h=.a)
+LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FN))
+LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
 RM := rm
@@ -16,9 +18,9 @@ all: main
 
 main: $(EXECUTABLE)
 libs: $(LIBS1)
-
+	
 $(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB)
-	$(CC) $(OBJS) -L. -lhello -L. -lgoodbye  $(LDFLAGS)  -o $@
+	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $@
 
 #echo libso!: $(LIBS_OB)
 
@@ -33,10 +35,13 @@ $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
 $(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
 
-%.a:$(OBJDIR)/%.o  
+$(LIBDIR)/%.a:$(OBJDIR)/%.o  |$(LIBDIR)
 	ar rcsv $@ $<
 
 #$(OBJS): 
+
+$(LIBDIR):
+	@mkdir $(LIBDIR)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
@@ -46,5 +51,5 @@ $(OBJDIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so)
+	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so) *.a
 
