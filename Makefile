@@ -22,8 +22,7 @@ main:
 	make do-target
 libs: $(LIBS1)
 	
-do-target: $(OBJS) $(LIBS1) $(LIBS_OB)
-	mkdir -p $(OUT_TARG_DIR)
+do-target: $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
 	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
 #:$@
 
@@ -50,6 +49,8 @@ $(LIBDIR):
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
+$(OUT_TARG_DIR):
+	mkdir $(OUT_TARG_DIR)
 #$(addprefix $(OBJDIR)/,hello.c)
 #make --trace -w
 
