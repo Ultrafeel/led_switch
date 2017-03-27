@@ -6,6 +6,7 @@ LIBSRCH=libhello.h libgoodbye.h
 SOURCES=hello.c
 OBJDIR:=objdir
 LIBDIR:=libraries
+OUT_TARG_DIR := target_bin/bin
 OBJS=$(OBJDIR)/hello.o
 LIBS_FILENAMES=$(LIBSRCH:.h=.a)
 LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FILENAMES))
@@ -13,20 +14,22 @@ LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
 RM := rm
+.PHONY: clean main libs do-target
 
-
-main: $(EXECUTABLE)
 all: 
 	make main
+main: 
+	make do-target
 libs: $(LIBS1)
 	
-$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB)
-	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $@
+do-target: $(OBJS) $(LIBS1) $(LIBS_OB)
+	mkdir -p $(OUT_TARG_DIR)
+	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
+#:$@
 
 #echo libso!: $(LIBS_OB)
 
 # -Wl,-trace-symbol=bye  
-.PHONY: clean main libs
 
 $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
@@ -52,5 +55,5 @@ $(OBJDIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv $(OBJS)  $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so) *.a
+	-$(RM)  -rfv $(OBJS) ./$(OUT_TARG_DIR)/$(EXECUTABLE) $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so) *.a
 
