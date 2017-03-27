@@ -39,7 +39,7 @@ $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
 $(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
 	$(CC) -I. $(CFLAGS) -c -o $@ $<
 
-%.so:%.o  
+$(LIBDIR)/%.so:$(OBJDIR)/%.o  |$(LIBDIR)
 	$(CC) -shared -o $@ $<
 
 $(LIBDIR)/%.a:$(OBJDIR)/%.o  |$(LIBDIR)
