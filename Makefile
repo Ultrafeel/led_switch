@@ -14,9 +14,10 @@ LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
 RM := rm
 
-all: main
 
 main: $(EXECUTABLE)
+all: 
+	make main
 libs: $(LIBS1)
 	
 $(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB)
