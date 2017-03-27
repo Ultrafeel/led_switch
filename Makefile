@@ -10,7 +10,7 @@ OBJDIR:=objdir
 LIBDIR:=libraries
 OUT_TARG_DIR := target_bin/bin
 OBJS=$(OBJDIR)/hello.o
-LIBS_FILENAMES=libhello.a libgoodbye.so
+LIBS_FILENAMES=libhello.so libgoodbye.a
 LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FILENAMES))
 LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
