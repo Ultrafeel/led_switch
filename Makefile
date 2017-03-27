@@ -1,3 +1,5 @@
+.SUFFIXES:
+.SUFFIXES: .a .c .o
 CC=gcc
 CFLAGS=-c -Wall -g
 LDFLAGS=
@@ -14,15 +16,14 @@ LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
 RM := rm
+
 .PHONY: clean main libs do-target
 
-all: 
-	make main
-main: 
-	make do-target
+all:  main
+main: $(OUT_TARG_DIR)/$(EXECUTABLE)
 libs: $(LIBS1)
 	
-do-target: $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
+$(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
 	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
 #:$@
 
