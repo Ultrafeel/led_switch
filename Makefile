@@ -7,8 +7,8 @@ SOURCES=hello.c
 OBJDIR:=objdir
 LIBDIR:=libraries
 OBJS=$(OBJDIR)/hello.o
-LIBS_FN=$(LIBSRCH:.h=.a)
-LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FN))
+LIBS_FILENAMES=$(LIBSRCH:.h=.a)
+LIBS1=$(addprefix $(LIBDIR)/,$(LIBS_FILENAMES))
 LIBS_O=$(LIBSRCH:.h=.o)
 LIBS_OB=$(addprefix $(OBJDIR)/,$(LIBS_O))
 EXECUTABLE=hello
