@@ -31,8 +31,12 @@ $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR)
 
 # -Wl,-trace-symbol=bye  
 
+
+# -fpic
+#          Generate position-independent code (PIC) suitable for use in a
+#         shared library, if supported for the target machine. 
 $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -c -o $@ $<
+	$(CC) -I. $(CFLAGS) -fpic -o $@ $<
 
 # %.h $(LIBS_OB) $(LIBSRCH)
 #$(OBJDIR)/%.o:%.c
