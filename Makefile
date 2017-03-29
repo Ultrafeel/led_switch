@@ -1,7 +1,7 @@
-.SUFFIXES:
-.SUFFIXES: .a .c .o
+#.SUFFIXES:
+#.SUFFIXES: .a .c .o
 CC=gcc
-CFLAGS=-c -Wall -g
+CFLAGS=-c -Wall
 LDFLAGS=
 LIBSRCH=libhello.h libgoodbye.h 
   
@@ -57,5 +57,5 @@ $(OUT_TARG_DIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv $(OBJS)  $(OBJDIR)/*.o ./$(OUT_TARG_DIR)/$(EXECUTABLE) $(LIBDIR)/*.a $(LIBDIR)/*.so $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so) *.a
+	-$(RM)  -rfv $(OBJS)  $(OBJDIR)/*.o ./$(OUT_TARG_DIR)/$(EXECUTABLE) $(LIBDIR)/*.a $(LIBDIR)/*.so *.so  $(EXECUTABLE)  $(LIBS1)  $(LIBS_OB) $(LIBS1:.a=.so) *.a
 
