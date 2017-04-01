@@ -57,5 +57,8 @@ $(OUT_TARG_DIR):
 
 clean:
 	@echo clean : $(OBJS)  $(EXECUTABLE) $(LIBS1)
-	-$(RM)  -rfv   $(OBJS) ./$(OUT_TARG_DIR)/$(EXECUTABLE) $(EXECUTABLE).o $(EXECUTABLE)  $(LIBS1) $(LIBS_FILENAMES) $(LIBS_OB) $(LIBSRCH:.h=.a) $(LIBSRCH:.h=.so)
+	-$(RM)  -rfv   $(OBJS) ./$(OUT_TARG_DIR)/$(EXECUTABLE) \
+ $(EXECUTABLE).o $(EXECUTABLE)  $(LIBS1) $(LIBS_FILENAMES) $(LIBS_OB) \
+ $(LIBSRCH:.h=.a) $(LIBSRCH:.h=.so) 
+	-@$(RM) -dfv $(OUT_TARG_DIR) $(OBJDIR) $(LIBDIR)
 
