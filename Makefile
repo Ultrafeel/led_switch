@@ -58,7 +58,7 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 $(OUT_TARG_DIR):
-	mkdir $(OUT_TARG_DIR)
+	mkdir -p $(OUT_TARG_DIR)
 #$(addprefix $(OBJDIR)/,hello.c)
 #make --trace -w
 
