@@ -1,8 +1,8 @@
 #.SUFFIXES:
 #.SUFFIXES: .a .c .o
-CC=gcc
-CFLAGS=-c -Wall
-LDFLAGS=
+#CC=gcc
+MCFLAGS:=-c -Wall $(CFLAGS)
+#LDFLAGS=
 LIBSRCH=libhello.h libgoodbye.h 
   
 SOURCES=hello.c
@@ -24,7 +24,7 @@ main: $(OUT_TARG_DIR)/$(EXECUTABLE)
 libs: $(LIBS1)
 	
 $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
-	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
+	$(LD) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye -lc $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
 #:$@
 
 #echo libso!: $(LIBS_OB)
@@ -36,12 +36,12 @@ $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR)
 #          Generate position-independent code (PIC) suitable for use in a
 #         shared library, if supported for the target machine. 
 $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -fpic -o $@ $<
+	$(CC) -I. $(MCFLAGS) -fpic -o $@ $<
 
 # %.h $(LIBS_OB) $(LIBSRCH)
 #$(OBJDIR)/%.o:%.c
 $(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -c -o $@ $<
+	$(CC) -I. $(MCFLAGS) -c -o $@ $<
 
 $(LIBDIR)/%.so:$(OBJDIR)/%.o  |$(LIBDIR)
 	$(CC) -shared -o $@ $<
