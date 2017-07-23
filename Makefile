@@ -1,8 +1,8 @@
 #.SUFFIXES:
 #.SUFFIXES: .a .c .o
-CC=gcc
-CFLAGS=-c -Wall
-LDFLAGS=
+#CC=gcc
+MCFLAGS:=-c -Wall $(CFLAGS)
+#LDFLAGS=
 LIBSRCH=libhello.h libgoodbye.h 
   
 SOURCES=hello.c
@@ -24,7 +24,7 @@ main: $(OUT_TARG_DIR)/$(EXECUTABLE)
 libs: $(LIBS1)
 	
 $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
-	$(CC) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye  $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
+	$(LD) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye -lc $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
 #:$@
 
 #echo libso!: $(LIBS_OB)
@@ -32,12 +32,12 @@ $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR)
 # -Wl,-trace-symbol=bye  
 
 $(OBJDIR)/lib%.o:lib%.c lib%.h | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -c -o $@ $<
+	$(CC) -I. $(MCFLAGS) -c -o $@ $<
 
 # %.h $(LIBS_OB) $(LIBSRCH)
 #$(OBJDIR)/%.o:%.c
 $(OBJS):hello.c $(LIBSRCH) | $(OBJDIR)
-	$(CC) -I. $(CFLAGS) -c -o $@ $<
+	$(CC) -I. $(MCFLAGS) -c -o $@ $<
 
 $(LIBDIR)/%.a:$(OBJDIR)/%.o  |$(LIBDIR)
 	ar rcsv $@ $<
