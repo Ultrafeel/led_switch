@@ -24,7 +24,7 @@ main: $(OUT_TARG_DIR)/$(EXECUTABLE)
 libs: $(LIBS1)
 	
 $(OUT_TARG_DIR)/$(EXECUTABLE): $(OBJS) $(LIBS1) $(LIBS_OB) | $(OUT_TARG_DIR) 
-	$(LD) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye -lc $(LDFLAGS)  -o $(OUT_TARG_DIR)/$(EXECUTABLE)
+	$(LD) $(OBJS) -L$(LIBDIR) -lhello -L$(LIBDIR) -lgoodbye -lc $(LDFLAGS) --dynamic-linker=/lib/ld-uClibc.so.1 -o $(OUT_TARG_DIR)/$(EXECUTABLE)
 #:$@
 
 #echo libso!: $(LIBS_OB)
