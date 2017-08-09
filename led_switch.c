@@ -141,7 +141,13 @@ int
 main(int argc, char *argv[])
 {
 	int repeat = 10;
- 
+ 	printf(" led_switch hello: \n");
+
+	if (argc >= 2)
+		repeat = atoi(argv[1]);
+	if (repeat <= 0)
+		repeat = 0x7fffffff;
+	printf(" repeat count = %d\n", repeat);
 	/*
 	 * Enable GPIO pins
 	 */
@@ -160,13 +166,13 @@ main(int argc, char *argv[])
 		 */
 		if (-1 == GPIOWrite(POUT, repeat % 2))
 			return(3);
- 
+		int r = GPIORead(PIN);
 		/*
 		 * Read GPIO value
 		 */
-		printf("I'm reading %d in GPIO %d\n", GPIORead(PIN), PIN);
+		printf("I'm reading %d in GPIO %d\n", r , PIN);
  
-		usleep(500 * 1000);
+		usleep(500 * 1000);//
 	}
 	while (repeat--);
  
