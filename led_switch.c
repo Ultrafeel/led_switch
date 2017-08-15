@@ -138,11 +138,21 @@ GPIOWrite(int pin, int value)
 }
  
 int
-main(int argc, char *argv[])
+main(int argc0, char *argv0[])
 {
+	int * pargc = &argc0;
+	int argc = argc0;
+	char **argv = argv0;
 	int repeat = 10;
  	printf(" led_switch hello: \n");
-
+	
+	if ((argc0 < 1) || (argc0 > 1000))
+	{
+		argc = *(pargc+1);
+		++argv;
+		
+	}
+		printf("  argc0 = %x, argv0 = %x , pargc = %x argv[0] = %x\n",  argc0, argv0, pargc, argv[0]);
 	if (argc >= 2)
 		repeat = atoi(argv[1]);
 	if (repeat <= 0)
