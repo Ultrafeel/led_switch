@@ -1,7 +1,7 @@
 #.SUFFIXES:
 #.SUFFIXES: .a .c .o
 #CC=gcc
-MCFLAGS:=-c -g -Wall $(CFLAGS)
+MCFLAGS:=-c  -ggdb3  -Wall $(CFLAGS) 
 #LDFLAGS=
 LIBSRCH=libhello.h libgoodbye.h 
   
