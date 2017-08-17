@@ -237,30 +237,12 @@ void poll_pin() {
 	}
 }
 
-int
-main(int argc0, char *argv0[])
+int main(void)
 {
-	int * const pargc = &argc0;
-	void* * const pvv = &argc0;
-	int argc = argc0;
-	char **argv = argv0;
 	int repeat = 10;
  	printf(" led_switch hello: \n");
 	
-	if ((argc0 < 1) || (argc0 > 1000))
-	{
-		argc = *(pargc+1);
-		argv = *(((void**)pargc)+2);
-		
-	}
-	printf("  argc0 = %x, argv0 = %p , pargc = %p, %p %p %p %p %p %p,  *((void**)argc0) %x %x %x %x %x\n",
-		  argc0, argv0, pargc, pvv[4], pvv[5], pvv[6], pvv[7], pvv[1], pvv[2],
-		   *((void**)argc0), pargc[-1],
-		  pargc[0], pargc[1], pargc[2]);
-	//if (argc >= 2)
-	//	repeat = atoi(argv[1]);
-	if (repeat <= 0)
-		repeat = 0x7fffffff;
+
 	printf(" repeat count = %d\n", repeat);
 	/*
 	 * Enable GPIO pins
