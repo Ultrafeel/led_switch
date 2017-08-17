@@ -256,21 +256,6 @@ int main(void)
 	if (-1 == GPIODirection(POUT, OUT) || -1 == GPIODirection(PIN, IN))
 		return(2);
  
-	do {
-		/*
-		 * Write GPIO value
-		 */
-		if (-1 == GPIOWrite(POUT, repeat % 2))
-			return(3);
-		int r = GPIORead(PIN);
-		/*
-		 * Read GPIO value
-		 */
-		printf("I'm reading %d in GPIO %d\n", r , PIN);
- 
-		usleep(500 * 1000);//
-	}
-	while (repeat--);
  
 	poll_pin();
 	/*
