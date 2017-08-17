@@ -18,7 +18,7 @@
 #include <poll.h>
 #include <errno.h>
 #include <string.h>
-
+#include "daemonize.h"
 #define IN  0
 #define OUT 1
  
@@ -237,7 +237,8 @@ void poll_pin() {
 	}
 }
 
-int main(void)
+
+int daemon_main(void)
 {
 	int repeat = 10;
  	printf(" led_switch hello: \n");
@@ -265,4 +266,16 @@ int main(void)
 		return(4);
  
 	return(0);
+}
+int main(void)
+{
+	int ret;
+	skeleton_daemon();
+	
+	ret= daemon_main();
+	// LOG_NOTICE
+	syslog (0, "First daemon terminated.");
+    //closelog();
+
+    return ret;
 }
