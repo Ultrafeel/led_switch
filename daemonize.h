@@ -1,5 +1,5 @@
 #ifndef _daemonize_h_
-     #define _daemonize_h_
+#define _daemonize_h_
      
 //#pragma once
 

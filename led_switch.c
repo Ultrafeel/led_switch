@@ -240,11 +240,8 @@ void poll_pin() {
 
 int daemon_main(void)
 {
-	int repeat = 10;
- 	printf(" led_switch hello: \n");
+	printf(" led_switch hello: \n");
 	
-
-	printf(" repeat count = %d\n", repeat);
 	/*
 	 * Enable GPIO pins
 	 */
