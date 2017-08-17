@@ -14,7 +14,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
- 
+
+#include <poll.h>
+#include <errno.h>
+#include <string.h>
+
 #define IN  0
 #define OUT 1
  
@@ -24,6 +28,11 @@
 #define PIN  17 /* P1-11 */
 #define POUT 18  /* P1-12 */
  
+ 
+void peror(char const* str)
+{
+	fprintf(stderr, "error: %s . errno = %d, err description: %s\n", str, errno, strerror(errno));
+}
 static int
 GPIOExport(int pin)
 {
@@ -62,13 +71,13 @@ GPIOUnexport(int pin)
 	close(fd);
 	return(0);
 }
+#define DIRECTION_MAX 35
  
 static int
 GPIODirection(int pin, int dir)
 {
 	static const char s_directions_str[]  = "in\0out";
  
-#define DIRECTION_MAX 35
 	char path[DIRECTION_MAX];
 	int fd;
  
@@ -136,11 +145,103 @@ GPIOWrite(int pin, int value)
 	close(fd);
 	return(0);
 }
+
+static int
+GPIOSetEvent(int pin, char * eventType)
+{
+	char path[VALUE_MAX];
+	int fd;
+	int sl;
  
+	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/edge", pin);
+	fd = open(path, O_WRONLY);
+	if (-1 == fd) {
+		fprintf(stderr, "Failed to open gpio edge for writing!\n");
+		return(-1);
+	}
+	sl = strlen(eventType);
+	if (sl != write(fd, eventType, strlen(eventType))) {
+		perror( "Failed to write edge!\n");
+		return(-1);
+	}
+ 
+	close(fd);
+	return(0);
+}
+
+
+void poll_pin() {
+	
+	
+	struct pollfd fdlist[1];
+	int fd;
+	int n;
+	int nErr =0;
+	char path[VALUE_MAX];
+	//char value_str[3];
+	printf(" poll pin! %d , %d", POLLPRI , POLLERR);
+	GPIOSetEvent(PIN, "both");
+ 
+	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", PIN);
+
+	fd = open(path, O_RDONLY);
+	if (-1 == fd) {
+		fprintf(stderr, "Failed to open  %s for poll!\n", path);
+		return ;
+	}
+	fdlist[0].fd = fd;
+	fdlist[0].events = POLLPRI |POLLERR;
+	while (1) {
+		int ret;
+		char value[4];
+		fdlist[0].revents = 0;
+		
+		lseek(fd, 0, SEEK_SET);    /* consume any prior interrupt */
+		read(fd, value, sizeof value);
+		
+		ret = poll(fdlist, 1, -1);
+
+		if (ret > 0) {
+			//if (fdlist[0].revents == POLLERR)
+			//{
+				//printf("poll e2 %hd %dhh\n", fdlist[0].revents, fdlist[0].revents == POLLERR);
+				//if (++nErr > 55)
+					//break;
+				//continue;
+			//}	
+			
+			lseek(fd, 0, SEEK_SET);    /* consume any prior interrupt */
+	
+			n = read(fd, &value, 
+			sizeof(value)); 
+			
+			if (n <= 0)
+			{
+				printf("read er ret=%d, revenets = %hx, errno=%d\n", n, fdlist[0].revents, errno);
+				if (++nErr > 55)
+					break;
+				continue;
+			}
+			else
+			{
+				printf("Button pressed: read %d bytes, value=%c;%c. =%hx\n", n, 
+			value[0], value[1], *((short*)value)); 	
+				GPIOWrite(POUT, value[0]=='1'?1:0);
+			}
+	
+		}  else {
+			perror("poll");
+			return;
+		}
+ 
+	}
+}
+
 int
 main(int argc0, char *argv0[])
 {
-	int * pargc = &argc0;
+	int * const pargc = &argc0;
+	void* * const pvv = &argc0;
 	int argc = argc0;
 	char **argv = argv0;
 	int repeat = 10;
@@ -149,12 +250,15 @@ main(int argc0, char *argv0[])
 	if ((argc0 < 1) || (argc0 > 1000))
 	{
 		argc = *(pargc+1);
-		++argv;
+		argv = *(((void**)pargc)+2);
 		
 	}
-		printf("  argc0 = %x, argv0 = %x , pargc = %x argv[0] = %x\n",  argc0, argv0, pargc, argv[0]);
-	if (argc >= 2)
-		repeat = atoi(argv[1]);
+	printf("  argc0 = %x, argv0 = %p , pargc = %p, %p %p %p %p %p %p,  *((void**)argc0) %x %x %x %x %x\n",
+		  argc0, argv0, pargc, pvv[4], pvv[5], pvv[6], pvv[7], pvv[1], pvv[2],
+		   *((void**)argc0), pargc[-1],
+		  pargc[0], pargc[1], pargc[2]);
+	//if (argc >= 2)
+	//	repeat = atoi(argv[1]);
 	if (repeat <= 0)
 		repeat = 0x7fffffff;
 	printf(" repeat count = %d\n", repeat);
@@ -186,6 +290,7 @@ main(int argc0, char *argv0[])
 	}
 	while (repeat--);
  
+	poll_pin();
 	/*
 	 * Disable GPIO pins
 	 */
