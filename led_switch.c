@@ -225,7 +225,8 @@ void poll_pin() {
 			{
 				printf("Button pressed: read %d bytes, value=%c;%x.\n", n, 
 			value[0], (int)value[1]); 	
-				GPIOWrite(POUT, value[0]=='1' ? HIGH : LOW);
+			//1 = unpressed.
+				GPIOWrite(POUT, value[0]=='1' ? LOW : HIGH );
 			}
 	
 		}  else {
