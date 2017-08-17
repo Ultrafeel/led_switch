@@ -190,7 +190,7 @@ void poll_pin() {
 		return ;
 	}
 	fdlist[0].fd = fd;
-	fdlist[0].events = POLLPRI |POLLERR;
+	fdlist[0].events = POLLPRI | POLLERR;
 	while (1) {
 		int ret;
 		char value[4];
@@ -212,8 +212,7 @@ void poll_pin() {
 			
 			lseek(fd, 0, SEEK_SET);    /* consume any prior interrupt */
 	
-			n = read(fd, &value, 
-			sizeof(value)); 
+			n = read(fd, &value, sizeof(value)); 
 			
 			if (n <= 0)
 			{
@@ -224,9 +223,9 @@ void poll_pin() {
 			}
 			else
 			{
-				printf("Button pressed: read %d bytes, value=%c;%c. =%hx\n", n, 
-			value[0], value[1], *((short*)value)); 	
-				GPIOWrite(POUT, value[0]=='1'?1:0);
+				printf("Button pressed: read %d bytes, value=%c;%x.\n", n, 
+			value[0], (int)value[1]); 	
+				GPIOWrite(POUT, value[0]=='1' ? 1 : 0);
 			}
 	
 		}  else {
@@ -269,9 +268,9 @@ int main(void)
 	int ret;
 	skeleton_daemon();
 	
-	ret= daemon_main();
+	ret = daemon_main();
 	// LOG_NOTICE
-	syslog (0, "First daemon terminated.");
+	syslog (0, "First led_switch daemon terminated.");
     //closelog();
 
     return ret;
